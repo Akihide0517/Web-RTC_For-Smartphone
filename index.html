@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Chat with Text Chat</title>
+  <style>
+    /* 簡単なスタイル調整 */
+    #local-video, #remote-media-area video {
+      width: 200px;
+    }
+    #chat-area {
+      border: 1px solid #ccc;
+      height: 200px;
+      overflow-y: auto;
+    }
+    #chat-input {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <label>ルーム名: <input type="text" id="room-name" /></label>
+    <button id="join">ルームに参加</button>
+  </div>
+  <div>
+    <video id="local-video" autoplay playsinline></video>
+  </div>
+  <div id="remote-media-area"></div>
+  <div>
+    <div id="chat-area"></div>
+    <input type="text" id="chat-input" placeholder="メッセージを入力..." />
+    <button id="send-chat">送信</button>
+  </div>
+  <div id="button-area"></div>
+  <div id="my-id"></div>
+		
+  <script src="https://cdn.jsdelivr.net/npm/@skyway-sdk/room/dist/skyway_room-latest.js"></script>
+  <script src="test.js"></script>
+</body>
+</html>
