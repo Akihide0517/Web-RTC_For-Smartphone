@@ -1,14 +1,13 @@
 import java.math.BigInteger;
 import java.util.Random;
 
-public class rsa_main {
+public class RSA {
 
-    public static void main(String[] args) {
-        // 素数 p と q を生成
-        BigInteger p = generatePrime(512);
-        BigInteger q = generatePrime(512);
-        System.out.println("p: " + p);
-        System.out.println("q: " + q);
+    public BigInteger[] Setting(int bitLength, String YourMessage) {
+        // 0. 素数 p と q を生成
+    	BigInteger[] PandQ = generatePQ(bitLength);//通常は512
+        BigInteger p = PandQ[0], q = PandQ[1];
+        System.out.println("p: " + p + ", q: " + q);
 
         // 1. n = p * q を計算
         BigInteger n = p.multiply(q);
@@ -26,18 +25,30 @@ public class rsa_main {
         BigInteger d = e.modInverse(phi);
         System.out.println("d: " + d);
 
-        // メッセージを暗号化し、復号化する
-        String message = "RSA Encryption Test";
+        // 5. メッセージの設定
+        String message = YourMessage;//"RSA Encryption Test"
         BigInteger messageBigInt = new BigInteger(message.getBytes());
+        
+        return new BigInteger[]{p, q, n, phi, e, d, messageBigInt};
+    }
+    
+    // 暗号化メソッド
+    public BigInteger encrypt(BigInteger message, BigInteger e, BigInteger n) {
+        return message.modPow(e, n);
+    }
 
-        // 暗号化
-        BigInteger encrypted = encrypt(messageBigInt, e, n);
-        System.out.println("暗号化されたメッセージ: " + encrypted);
-
-        // 復号化
-        BigInteger decrypted = decrypt(encrypted, d, n);
-        String decryptedMessage = new String(decrypted.toByteArray());
-        System.out.println("復号化されたメッセージ: " + decryptedMessage);
+    // 復号化メソッド
+    public BigInteger decrypt(BigInteger encrypted, BigInteger d, BigInteger n) {
+        return encrypted.modPow(d, n);
+    }
+    
+    //以下計算部
+    
+    // 素数 p と q を設定
+    private static BigInteger[] generatePQ(int bitLength) {
+    	BigInteger p = generatePrime(bitLength);
+        BigInteger q = generatePrime(bitLength);
+    	return new BigInteger[]{p, q};
     }
 
     // 指定されたビット数で素数を生成するメソッド
@@ -55,15 +66,5 @@ public class rsa_main {
             }
         }
         return prime;
-    }
-
-    // 暗号化メソッド
-    private static BigInteger encrypt(BigInteger message, BigInteger e, BigInteger n) {
-        return message.modPow(e, n);
-    }
-
-    // 復号化メソッド
-    private static BigInteger decrypt(BigInteger encrypted, BigInteger d, BigInteger n) {
-        return encrypted.modPow(d, n);
     }
 }
