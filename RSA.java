@@ -1,7 +1,8 @@
 import java.math.BigInteger;
-import java.util.Random;
 
 public class RSA {
+	
+	/*以下setter*/
 
     public BigInteger[] Setting(int bitLength, String YourMessage) {
         // 0. 素数 p と q を生成
@@ -32,6 +33,8 @@ public class RSA {
         return new BigInteger[]{p, q, n, phi, e, d, messageBigInt};
     }
     
+    /*以下getter*/
+    
     // 暗号化メソッド
     public BigInteger encrypt(BigInteger message, BigInteger e, BigInteger n) {
         return message.modPow(e, n);
@@ -42,7 +45,7 @@ public class RSA {
         return encrypted.modPow(d, n);
     }
     
-    //以下計算部
+    /*以下計算部*/
     
     // 素数 p と q を設定
     private static BigInteger[] generatePQ(int bitLength) {
@@ -53,18 +56,41 @@ public class RSA {
 
     // 指定されたビット数で素数を生成するメソッド
     private static BigInteger generatePrime(int bitLength) {
-        Random random = new Random();
         BigInteger prime;
 
-        // primeCertaintyは素数判定の繰り返し回数で、値が大きいほど素数である確率が高くなる
+        // primeCertainty は素数判定の繰り返し回数で、値が大きいほど素数である確率が高くなる
         int primeCertainty = 100;
 
         while (true) {
-            prime = new BigInteger(bitLength, random);
+            // 指定されたビット長に合わせてランダムなBigIntegerを生成
+            prime = generateRandomBigInteger(bitLength);
+
+            // 素数の候補が見つかったかチェック
             if (prime.isProbablePrime(primeCertainty)) {
                 break;
             }
         }
         return prime;
+    }
+
+    // 指定されたビット長のランダムなBigIntegerを生成するメソッド
+    private static BigInteger generateRandomBigInteger(int bitLength) {
+        // 必要なビット数を32ビットのチャンクに分割して生成
+        int numChunks = (bitLength + 31) / 32; // 32ビットのチャンクの数
+        BigInteger result = BigInteger.ZERO;
+
+        for (int i = 0; i < numChunks; i++) {
+            int randomBits = new java.util.Random().nextInt();
+            // チャンクを適切な位置にシフトして追加
+            result = result.shiftLeft(32).or(BigInteger.valueOf(randomBits & 0xFFFFFFFFL));
+        }
+
+        // 指定されたビット長に切り詰める
+        result = result.and(BigInteger.ONE.shiftLeft(bitLength).subtract(BigInteger.ONE));
+
+        // 最上位ビットを1に設定して、ビット長を保証
+        result = result.setBit(bitLength - 1);
+
+        return result.abs(); // 正の数にする
     }
 }
