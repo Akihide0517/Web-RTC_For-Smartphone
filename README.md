@@ -1,6 +1,8 @@
 ### スマートフォンをVCやOculusで操作できるようにする計画
 目的:オキュラスからスマホを遠隔操作したいぃぃぃ、、、
 
+(本プログラムの.inoはESP32-BLE-Mouse-master.zipライブラリとESP32が必要です)
+
 ## 動作確認済み項目
 ・ESP32-BleController-UDPver-Grobal.ino ...ESP32をマウスとしてスマホに接続→コントロールする。座標送信手段はUDP。
 
