@@ -7,7 +7,7 @@ const char* ssid = "ssid";
 const char* password = "password";
 
 WiFiUDP wifiUdp;
-const int myPort = 1024; // 1024～60253を設定->本来はこの範囲でrandomが良い
+const int myPort = 1024; // 1024～60253を設定
 
 void setup() {
   M5.begin();
@@ -18,18 +18,24 @@ void setup() {
 }
 
 void loop() {
-  if(wifiUdp.parsePacket()){
+  int packetSize = wifiUdp.parsePacket();
+  if (packetSize) {
+    char packetBuffer[255]; // 受信するデータ用のバッファ
+    int len = wifiUdp.read(packetBuffer, 255); // データをバッファに読み取る
+    if (len > 0) {
+      packetBuffer[len] = 0; // 文字列の終端を追加
+    }
+
     M5.Lcd.clear();
-    
-    char s;
-    s = (char)wifiUdp.read();
-    M5.Lcd.println(s);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.print("Received UDP data:\n");
+    M5.Lcd.println(packetBuffer); // 受信したデータを表示
   }
 }
 
-void WiFiConnect(){
-  WiFi.begin(ssid,password);
-  while(WiFi.status() != WL_CONNECTED){
+void WiFiConnect() {
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     M5.Lcd.print('.');
   }
