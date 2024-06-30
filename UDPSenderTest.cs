@@ -4,7 +4,7 @@ using System.Collections;
 
 public class UdpSenderTest : MonoBehaviour
 {
-    void Roop(){
+    void Start(){
       Main();
     }
 
@@ -22,7 +22,7 @@ public class UdpSenderTest : MonoBehaviour
         int z = 0; // ボタンの状態
 
         // データを "x, y, z" の形式にフォーマットする
-        string sendMsg = $"{x},{y},{z}";
+        string sendMsg = $"{x}, {y}, {z}";
         byte[] sendBytes = System.Text.Encoding.UTF8.GetBytes(sendMsg);
 
         udp.Send(sendBytes, sendBytes.Length, remoteHost, remotePort);
