@@ -19,6 +19,8 @@ void setup() {
 
 void loop() {
   if(wifiUdp.parsePacket()){
+    M5.Lcd.clear();
+    
     char s;
     s = (char)wifiUdp.read();
     M5.Lcd.println(s);
