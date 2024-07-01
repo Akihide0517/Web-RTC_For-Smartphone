@@ -20,3 +20,5 @@
 ・CRAFT GoGo.(https://craft-gogo.com/m5stack-udp/) ...このサイトを参考に作成したプログラムの内、ほぼそのままであるESP32-UDP-Receiver-Global.inoについては一切の著作権を放棄します。（ライセンスが不明なので）
 
 ・monoqy blog(http://monqy.blogspot.com) ...このサイトを参考に作成したプログラムの内、ほぼそのままであるUDP_SendTest.javaについては一切の著作権を放棄します。（ライセンスが不明なので）
+
+・AWS資料（https://sbcr-dl-old.s3-ap-northeast-1.amazonaws.com/books/img/Linuxnet_03.pdf）
