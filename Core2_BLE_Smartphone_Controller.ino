@@ -13,6 +13,8 @@ const unsigned long rightClickThreshold = 100; // 右クリック判定の時間
 
 char receivedText[64]; // 受信データを格納するバッファ
 
+bool btnA_pressed = false; // btnA の状態を追跡するためのフラグ
+
 void setup() {
   // 初期化
   Serial.begin(115200);
@@ -55,12 +57,25 @@ void loop() {
     }
   }
 
+  // btnA の状態を確認してトグルする処理
+  M5.update();
+  if (M5.BtnA.wasPressed()) {
+    btnA_pressed = !btnA_pressed; // btnA の状態をトグルする
+    if (btnA_pressed) {
+      bleMouse.press(MOUSE_LEFT); // クリックを開始
+    } else {
+      bleMouse.release(MOUSE_LEFT); // クリックを解除
+    }
+  }else if(M5.BtnB.wasPressed()){
+    bleMouse.press(MOUSE_RIGHT);
+    bleMouse.release(MOUSE_RIGHT);
+  }
+
   // タッチ座標処理
   if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
 
     TouchPoint_t atTouchPoint;
-    M5.update();
     if (M5.Touch.ispressed()) {
       // タッチしたX座標、Y座標を取得する
       atTouchPoint = M5.Touch.getPressPoint();
